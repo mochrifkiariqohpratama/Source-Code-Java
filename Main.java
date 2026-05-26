@@ -1,73 +1,79 @@
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
-    Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
 
-    String golongan;
-    int jamLembur;
+        //Array gaji pokok berdasarkan golongan
+        double[] gaji = {5000000, 6500000, 9500000};
 
-    double gajiPokok = 0;
-    double persenLembur = 0;
-    double gajiLembur;
-    double totalGaji;
+        //Array untuk persentase lembur
+        int[] lemburPersen = {30, 32, 34, 36, 38};
 
-    
-    //input
-    System.out.print("Masukkan Golongan Karyawan (A/B/C): ");
-    golongan = input.nextLine();
+        String golongan;
+        int jamLembur;
+        double gajiPokok = 0;
+        double gajiLembur = 0;
+        double totalGaji;
 
-    System.out.print("Masukkan Jam Lembur: ");
-    jamLembur = input.nextInt();
+        //Format mata uang rupiah
+        Locale indonesia = Locale.of("id", "ID");
+        NumberFormat rupiah = NumberFormat.getCurrencyInstance(indonesia);
 
-    //menentukan gaji pokok
-    if (golongan.equals("A")) {
-        gajiPokok = 5000000;
-    } else if (golongan.equals("B")){
-        gajiPokok = 6500000;
-    } else if (golongan.equals("C")){
-        gajiPokok = 9500000;
-    } else {
-        System.out.println("Golongan tidak valid!");
+        //input golongan karyawan
+        System.out.print("Masukkan Golongan Karyawan (A/B/C): ");
+        golongan = input.next().toUpperCase();
+
+        //IF untuk mengambil gaji dari array
+        if (golongan.equals("A")){
+            gajiPokok = gaji[0];
+        } else if (golongan.equals("B")){
+            gajiPokok = gaji[1];
+        } else if (golongan.equals("C")){
+            gajiPokok = gaji[2];
+        }
+        else {
+            System.out.println("Golongan Tidak Valid!");
+            input.close();
+            return;
+        }
+
+        //input jam lembur
+        System.out.print("Masukkan Jumlah Jam Lembur :");
+        jamLembur = input.nextInt();
+
+        //IF menentukan Persen Lembur
+        if (jamLembur == 1) {
+            gajiLembur = gajiPokok * lemburPersen[0] / 100;
+        }
+        else if (jamLembur == 2) {
+            gajiLembur = gajiPokok * lemburPersen[1] / 100;
+        }
+        else if (jamLembur == 3) {
+            gajiLembur = gajiPokok * lemburPersen[2] / 100;
+        }
+        else if (jamLembur == 4) {
+            gajiLembur = gajiPokok * lemburPersen[3] / 100;
+        }
+        else if (jamLembur >= 5) {
+            gajiLembur = gajiPokok * lemburPersen[4] / 100;
+        }
+
+        //Operator penjumlahan
+        totalGaji = gajiPokok + gajiLembur;
+
+        //output
+        System.out.println("\n========== DATA GAJI KARYAWAN==========");
+        System.out.println("Golongan     :" + golongan);
+        System.out.println("Gaji Pokok   :" + rupiah.format(gajiPokok));
+        System.out.println("Jam Lembur   :" + jamLembur);
+        System.out.println("Gaji Lembur  :" + rupiah.format(gajiLembur));
+        System.out.println("Total Gaji   :" + rupiah.format(totalGaji));
+
         input.close();
-        return;
+
     }
-
-    //Menentukan persentase lembur
-    if (jamLembur == 1) {
-        persenLembur = 0.30;
-    } else if (jamLembur == 2) {
-        persenLembur = 0.32; 
-    } else if (jamLembur == 3) {
-        persenLembur = 0.34;
-    } else if (jamLembur == 4) {
-        persenLembur = 0.36;
-    } else if (jamLembur >= 5) {
-        persenLembur = 0.38;
-    } else {
-        persenLembur = 0;
-    }
-
-    //Menghitung gaji Lembur
-    gajiLembur = gajiPokok*persenLembur;
-
-    //Menghitung total penghasilan
-    totalGaji = gajiPokok + gajiLembur;
-
-    //Output
-    System.out.println("\n===== HASIL PERHITUNGAN =====");
-    System.out.println("Golongan Karyawan : " + golongan);
-
-    System.out.printf("Gaji Pokok : Rp %,.0f\n", gajiPokok);
-    System.out.println("jam Lembur :" + jamLembur + "Jam");
-
-    System.out.printf("Gaji Lembur : Rp %,.0f\n", gajiLembur);
-    System.out.printf("Total Penghasilan : Rp %,.0f\n", totalGaji);
-
-    input.close();
-
-
-}
-
 }
